@@ -1,0 +1,130 @@
+//create a user
+POST http://localhost:3000/user-api/users
+Content-Type: application/json
+
+{
+    "firstName":"manish",
+    "lastName":"Gaddam",
+    "email":"manish@gmail.com",
+    "password":"manish123",
+    "profileImageUrl":"https://1drv.ms/i/c/b110ea05099c2c62/IQCtdSfDoCLlQZhLcvJ0ZBAGAUcoj_zdE5La6Ri3EAqNWlI?e=MvdEq8"
+
+}
+
+
+//create a author
+###
+POST http://localhost:3000/author-api/users
+Content-Type: application/json
+
+{
+    "firstName":"nikhil",
+    "lastName":"mudumala",
+    "email":"mudumala@gmail.com",
+    "password":"nikky123",
+    "profileImageUrl":"https://in.images.search.yahoo.com/search/images;_ylt=AwrPqFjbaolp0icj2CS9HAx.;_ylu=c2VjA3NlYXJjaARzbGsDYnV0dG9u;_ylc=X1MDMjExNDcyMzAwNQRfcgMyBGZyA21jYWZlZQRmcjIDcDpzLHY6aSxtOnNiLXRvcARncHJpZANYUDhmbDZzNFNqdVJZek5JUUkuZVdBBG5fcnNsdAMwBG5fc3VnZwMxMARvcmlnaW4DaW4uaW1hZ2VzLnNlYXJjaC55YWhvby5jb20EcG9zAzAEcHFzdHIDBHBxc3RybAMwBHFzdHJsAzgEcXVlcnkDc2FtYW50aGEEdF9zdG1wAzE3NzA2MTc5NDA-?p=samantha&fr=mcafee&fr2=p%3As%2Cv%3Ai%2Cm%3Asb-top&ei=UTF-8&x=wrt&type=E210IN0G0#id=5&iurl=https%3A%2F%2Fwww.behindwoods.com%2Fuploads%2F6219eb34c712a.jpg&action=click"
+
+}
+
+# //authenticate user
+###
+POST http://localhost:3000/common-api/authenticate
+Content-Type: application/json
+
+{
+    "email":"mudumalanithin6@gmail.com",
+    "password":"nithin123",
+    "role":"USER"
+}
+
+//authenticate user(login)
+###
+POST http://localhost:3000/common-api/authenticate
+Content-Type: application/json
+
+{
+    "email":"mudumala@gmail.com",
+    "password":"nikky123",
+    "role":"AUTHOR"
+}
+
+//logout
+###
+GET http://localhost:3000/common-api/logout
+
+//create an article
+###
+POST http://localhost:3000/author-api/articles
+Content-Type: application/json
+
+{
+    "author":"69ae8028de39c353710797ea",
+    "title":"python prograaming",
+    "category":"programming",
+    "content":"Python data types offers, enabling you to manipulate and manage data with precision and flexibility. Additionally, we'll delve into the dynamic world of data conversion with casting, and then move on to explore the versatile collections Python provides, including lists, tuples, sets, dictionaries, and arrays."
+}
+
+//read all articles of an user
+###
+GET http://localhost:3000/author-api/articles/698a045b3bfe09230c267c64
+
+//edit the article
+###
+PUT http://localhost:3000/author-api/articles
+Content-Type: application/json
+
+{
+    "author":"69ae8028de39c353710797ea",
+    "articleId":"69ae8ad0276c264876d3a538",
+    "title":"java programming",
+    "category":"programming",
+    "content":"Java data types offers, enabling you to manipulate and manage data with precision and flexibility. Additionally, we'll delve into the dynamic world of data conversion with casting, and then move on to explore the versatile collections Java provides, including lists, tuples, sets, dictionaries, and arrays."
+}
+
+//delete the article
+###
+PATCH http://localhost:3000/author-api/articles/69ae8ad0276c264876d3a538/status
+Content-Type: application/json
+
+{
+    "isArticleActive":false
+}
+
+
+//read articles by user id
+###
+GET http://localhost:3000/user-api/users
+
+//write comments to the article
+###
+POST http://localhost:3000/user-api/articles
+Content-Type: application/json
+
+{
+    "user":"698c9be38e7d7587577f8b4a",
+    "articleId":"69ae8ad0276c264876d3a538",
+    "comment":"this article is very useful to learn python"
+}
+
+//handle wrong paths
+###
+GET http://localhost:3000/test
+
+//block the user
+###
+PUT http://localhost:3000/admin-api/block/69ae8028de39c353710797ea
+
+//unblock the user
+###
+PUT http://localhost:3000/admin-api/unblock/698a045b3bfe09230c267c64
+
+
+//change the password
+###
+PUT http://localhost:3000/common-api/change-password/6989b3e14f10cc1a605ea2a7
+Content-Type: application/json
+
+{
+    "currentPassword":"admin123",
+    "newPassword":"admin321"
+}
