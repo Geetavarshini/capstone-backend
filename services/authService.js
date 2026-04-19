@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import { UserTypeModel } from "../models/userModel.js";
 import { config } from "dotenv";
 import { Error } from "mongoose";
+
 config();
 
 //register function
@@ -24,39 +25,39 @@ export const register=async(userObj)=>{
 }
 
 //authenticate function
-export const authenticate=async(email,password)=>{
-    //check user with email and role
-    const user=await UserTypeModel.findOne({email});
-    if(!user){
-        const err=new Error("Invalid email");
-        err.status=401;
-        throw err;
-    }
-    
-    //compare passwords
-    const isMatchedPassword=await bcrypt.compare(password,user.password);
-    if(!isMatchedPassword){
-        const err=new Error("Invalid Password");
-        err.status=401;
-        throw err;
-    }
+export const authenticate = async (email, password) => {
 
-    //if user is valid but blocked by admin
-    if(!user.isActive){
-        const err=new Error("Your Account is blocked by the Admin.Plz contact");
-        err.status=403;
-        throw err;
-    }
+  const user = await UserTypeModel.findOne({ email });
 
-    //generate token
-    const token=jwt.sign({userId:user._id,
-                          role:user.role          
-    },process.env.JWT_SECRET,{expiresIn:"1h"});
+  if (!user) {
+    const err = new Error("Invalid email");
+    err.status = 401;
+    throw err;
+  }
 
-    const userObj=user.toObject();
-    delete userObj.password;
-    return {token ,user:userObj};
+  const isMatchedPassword = await compare(password, user.password);
 
-    
-}
+  if (!isMatchedPassword) {
+    const err = new Error("Invalid Password");
+    err.status = 401;
+    throw err;
+  }
+
+  if (!user.isActive) {
+    const err = new Error("Your Account is blocked by the Admin");
+    err.status = 403;
+    throw err;
+  }
+
+  const token = jwt.sign(
+    { userId: user._id, role: user.role },
+    process.env.JWT_SECRET,
+    { expiresIn: "1h" }
+  );
+
+  const userObj = user.toObject();
+  delete userObj.password;
+
+  return { token, user: userObj };
+};
 
