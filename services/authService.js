@@ -35,7 +35,7 @@ export const authenticate = async (email, password) => {
     throw err;
   }
 
-  const isMatchedPassword = await compare(password, user.password);
+  const isMatchedPassword = await bcrypt.compare(password, user.password);
 
   if (!isMatchedPassword) {
     const err = new Error("Invalid Password");
@@ -60,4 +60,3 @@ export const authenticate = async (email, password) => {
 
   return { token, user: userObj };
 };
-
