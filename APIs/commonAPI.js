@@ -11,12 +11,15 @@ commonRoute.post("/authenticate", async (req, res) => {
   try {
     let { email, password } = req.body;
 
+    // call service
     let { token, user } = await authenticate(email, password);
 
+    // if user not found or invalid
     if (!user) {
-      return res.status(401).json({ message: "Invalid credentials" });
+      return res.status(401).json({ message: "Invalid email or password" });
     }
 
+    // set cookie
     res.cookie("token", token, {
       httpOnly: true,
       sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
@@ -24,6 +27,7 @@ commonRoute.post("/authenticate", async (req, res) => {
       maxAge: 3600000
     });
 
+    // send response
     res.status(200).json({
       message: "Login Success",
       payload: user
@@ -31,7 +35,11 @@ commonRoute.post("/authenticate", async (req, res) => {
 
   } catch (err) {
     console.log("LOGIN ERROR:", err); 
-    res.status(500).json({ message: "Server error" });
+
+    res.status(500).json({
+      message: "Server error",
+      error: err.message
+    });
   }
 });
 //logout
