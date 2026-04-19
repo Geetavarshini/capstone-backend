@@ -7,21 +7,33 @@ import { UserTypeModel } from '../models/userModel.js';
 export const commonRoute=exp.Router();
 
 //login
-commonRoute.post("/authenticate",async(req,res)=>{
-    //get user credential object
-        let {email,password}=req.body;
-        //call authenticate service
-        let {token,user}= await authenticate(email,password);
-        //save token as HTTPOnly cookie
-        res.cookie("token",token,{
-            httpOnly:true,
-            sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-            secure:process.env.NODE_ENV === "production" ? true : false,
-            maxAge: 3600000 // 1 hour
-        });
-        //send res
-        res.status(201).json({message:"Login Success",payload:user});
-})
+commonRoute.post("/authenticate", async (req, res) => {
+  try {
+    let { email, password } = req.body;
+
+    let { token, user } = await authenticate(email, password);
+
+    if (!user) {
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 3600000
+    });
+
+    res.status(200).json({
+      message: "Login Success",
+      payload: user
+    });
+
+  } catch (err) {
+    console.log("LOGIN ERROR:", err); 
+    res.status(500).json({ message: "Server error" });
+  }
+});
 //logout
 commonRoute.get("/logout",async(req,res)=>{
     //clear the cookie named token
