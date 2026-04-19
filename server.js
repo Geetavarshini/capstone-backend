@@ -87,7 +87,7 @@ app.use((err, req, res, next) => {
     });
   }
 
-  // ✅ HANDLE CUSTOM ERRORS
+  // HANDLE CUSTOM ERRORS
   if (err.status) {
     return res.status(err.status).json({
       message: "error occurred",
