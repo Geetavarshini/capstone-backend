@@ -81,10 +81,21 @@ commonRoute.get(
   "/check-auth",
   verifyToken("USER", "AUTHOR", "ADMIN"),
   async (req, res) => {
-    res.status(200).json({
-      message: "User is authenticated",
-      payload: req.user
-    });
+    try {
+      const user = await UserTypeModel
+        .findById(req.user.userId)
+        .select("-password");
+
+      res.status(200).json({
+        message: "User is authenticated",
+        payload: user
+      });
+    } catch (err) {
+      res.status(500).json({
+        message: "Error fetching user",
+        error: err.message
+      });
+    }
   }
 );
 
