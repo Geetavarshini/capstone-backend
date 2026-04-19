@@ -12,7 +12,7 @@ const app=exp()
 
 //use cors middleware
 app.use(cors({
-    origin: ['https://blogapp-indol-six.vercel.app','https://blogapp-9cdzt06r7-nithin-6546s-projects.vercel.app'
+    origin: ['http://localhost:5173','https://capstone-frontend-roan-omega.vercel.app/#'
     ], //  frontend URL
     credentials: true, // Allow cookies to be sent
 }));
@@ -34,7 +34,7 @@ const connectDb=async()=> {
     try{
     await connect(process.env.DB_URL)
     console.log("Connected to Database");
-    app.listen(process.env.PORT,()=> console.log("Server Started"));
+    app.listen(process.env.PORT || 3000, () => console.log("Server Started"));
     }catch(err){
         console.log("Error in Database Connection",err);
     }  
