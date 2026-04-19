@@ -12,7 +12,7 @@ const app=exp()
 
 //use cors middleware
 app.use(cors({
-    origin: ['http://localhost:5173','https://capstone-frontend-roan-omega.vercel.app'
+    origin: ['http://localhost:5173','https://capstone-frontend-3.vercel.app/'
     ], //  frontend URL
     credentials: true, // Allow cookies to be sent
 }));
